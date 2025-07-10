@@ -1,12 +1,13 @@
 import { memo } from "react"
 import type { TodoItemType } from "./types"
 import Checkbox from "../../components/Checkbox"
-import { useTodoItemActions } from "./hooks/useTodo"
+import { useTodoItemListeners } from "./hooks/useTodo"
 
 export default memo(TodoItem)
 
 function TodoItem(props: TodoItemType) {
-  const { onKeyboardDelete, onChange, ...actions } = useTodoItemActions(props)
+  const { onKeyboardDelete, onChange, ...fieldListeners } =
+    useTodoItemListeners(props)
 
   return (
     <span
@@ -22,7 +23,7 @@ function TodoItem(props: TodoItemType) {
         <span
           className={`focus-visible:p-2 focus-visible:-m-2 ${props.completed ? "not-focus-within:line-through text-[#999] focus:text-white" : "text-white"}`}
           contentEditable="plaintext-only"
-          {...actions}
+          {...fieldListeners}
           suppressContentEditableWarning
         >
           {props.title}

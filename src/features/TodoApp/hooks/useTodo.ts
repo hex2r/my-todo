@@ -13,7 +13,7 @@ import { useStoreAPI } from "../context/TodoStore"
 
 const { ENTER, BACKSPACE } = KEYBOARD_KEYS
 
-function useBasicTodoFieldActions() {
+function useBasicTodoListeners() {
   const onBlur = useCallback((e: FocusEvent<HTMLSpanElement, Element>) => {
     const field = e.currentTarget
     const currentValue = field.innerText
@@ -49,10 +49,10 @@ function useBasicTodoFieldActions() {
   )
 }
 
-export function useTodoItemActions({ id, title }: TodoItemType) {
+export function useTodoItemListeners({ id, title }: TodoItemType) {
   const { editTodo, deleteTodo } = useStoreAPI()
 
-  const { onBlur: onBasicBlur, onInput, onFocus } = useBasicTodoFieldActions()
+  const { onBlur: onBasicBlur, onInput, onFocus } = useBasicTodoListeners()
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     editTodo(id, { completed: e.target.checked })
@@ -117,9 +117,9 @@ export function useTodoItemActions({ id, title }: TodoItemType) {
   )
 }
 
-export function useAddTodoItemActions() {
+export function useAddTodoItemListeners() {
   const { addTodo } = useStoreAPI()
-  const { onBlur: onBasicBlur, onFocus, onInput } = useBasicTodoFieldActions()
+  const { onBlur: onBasicBlur, onFocus, onInput } = useBasicTodoListeners()
 
   const onKeyDown = useCallback((e: KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === ENTER) {
