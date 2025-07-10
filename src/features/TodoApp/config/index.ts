@@ -1,0 +1,1 @@
+export const TODO_FIELD_MAX_CHAR_COUNT = 250
