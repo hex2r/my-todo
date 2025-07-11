@@ -52,8 +52,18 @@ export default function useHorizontalSwipe<Handler extends Function>({
     [deltaX, deltaY, swipeDeltaX, swipeLeftHandler, swipeRightHandler],
   )
 
+  const limitateSwipe = (actualDelta: number) => {
+    return actualDelta > 0
+      ? actualDelta > 0
+        ? swipeDeltaX
+        : actualDelta
+      : actualDelta < -swipeDeltaX
+        ? -swipeDeltaX
+        : actualDelta
+  }
+
   return {
-    deltaX,
+    deltaX: limitateSwipe(deltaX),
     touchStartX,
     swipeListeners: {
       onTouchStart,

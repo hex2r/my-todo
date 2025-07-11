@@ -23,6 +23,9 @@ function TodoItem(props: TodoItemType) {
   })
   const { menu, onContextMenu } = useContextMenu()
 
+  const limitedDeltaX =
+    deltaX > 0 ? (deltaX > 0 ? 50 : deltaX) : deltaX < -50 ? -50 : deltaX
+
   return (
     <>
       <div
@@ -35,7 +38,7 @@ function TodoItem(props: TodoItemType) {
         {...swipeListeners}
         onContextMenu={onContextMenu}
         style={{
-          transform: `translateX(${deltaX > 0 ? (deltaX > 0 ? 50 : deltaX) : deltaX < -50 ? -50 : deltaX}px)`,
+          transform: `translateX(${limitedDeltaX}px)`,
         }}
       >
         <Checkbox
