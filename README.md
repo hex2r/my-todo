@@ -6,72 +6,20 @@
 
 A simple Todo app built with React Context API and the HTML contentEditable attribute, eliminating the need for traditional HTML forms. On session start, the app generates a fixed set of demo todos with random content and stores all todo items in Session Storage. Users can edit todos inline, add new todos, and remove items using the Shift+Delete keyboard shortcut. The user interface is styled with Tailwind CSS.
 
-# React + TypeScript + Vite
+### Behaviour:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Keyboard:**
 
-Currently, two official plugins are available:
+- Editing a to-do item
+- Toggling the completed state of a to-do item
+- Deleting a to-do item using the shortcut Shift+Delete
+- Deleting all completed items (if any exist)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Mouse:**
 
-## Expanding the ESLint configuration
+- Users can invoke the context menu by clicking on a todo item
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Touch Devices**
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x"
-import reactDom from "eslint-plugin-react-dom"
-
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Swipe left on a todo item to remove it
+- Swipe right on a to-do item to toggle its completed state
