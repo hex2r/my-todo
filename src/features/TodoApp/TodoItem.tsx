@@ -27,7 +27,7 @@ function TodoItem(props: TodoItemType) {
       <div
         id={props.id}
         data-shortcut-info="shift+delete to delete"
-        className="relative transition-[transform_220ms_ease-out] flex items-start overflow-hidden w-full gap-4 p-4 hover:bg-[#2a2a2a] has-focus-visible:z-2 has-focus-visible:bg-[#333] has-focus-visible:before:content-[attr(data-shortcut-info)] before:absolute before:top-full before:right-1 before:text-[0.5rem] before:text-[#666] before:mt-[0.5]"
+        className="relative transition-[transform_220ms_ease-out] flex items-start w-full gap-4 p-4 hover:bg-[#2a2a2a] has-focus-visible:z-2 has-focus-visible:bg-[#333] has-focus-visible:before:content-[attr(data-shortcut-info)] before:absolute before:top-full before:right-1 before:text-[0.5rem] before:text-[#666] before:mt-[0.5]"
         {...itemListeners}
         {...swipeListeners}
         onContextMenu={onContextMenu}
