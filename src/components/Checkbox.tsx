@@ -1,22 +1,23 @@
-import { useRef, type ChangeEvent, type KeyboardEvent } from "react"
+import { type ChangeEvent, type KeyboardEvent, type RefObject } from "react"
 import { IoCheckbox, IoSquare } from "react-icons/io5"
 
 type CheckboxProps = {
+  ref?: RefObject<HTMLInputElement | null>
   isChecked?: boolean
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
   isDisabled?: boolean
 }
 
 export default function Checkbox({
+  ref,
   isChecked = false,
   isDisabled,
   onChange = () => {},
 }: CheckboxProps) {
-  const checkboxRef = useRef<HTMLInputElement>(null)
   const handleKeyDown = (e: KeyboardEvent<HTMLLabelElement>) => {
     if (e.key === " " || e.key === "Enter") {
       e.preventDefault()
-      checkboxRef.current?.click()
+      ref?.current?.click()
     }
   }
 
@@ -29,7 +30,7 @@ export default function Checkbox({
       onKeyDown={handleKeyDown}
     >
       <input
-        ref={checkboxRef}
+        ref={ref}
         tabIndex={-1}
         className="sr-only peer"
         type="checkbox"

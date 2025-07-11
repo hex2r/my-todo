@@ -10,6 +10,7 @@ import { KEYBOARD_KEYS } from "../../../config/constants"
 import moveCaret from "../../../helpers/moveCaret"
 import { TODO_FIELD_MAX_CHAR_COUNT } from "../config"
 import { useStoreAPI } from "../context/TodoStore"
+import { v7 as uuidv7 } from "uuid"
 
 const { ENTER, BACKSPACE } = KEYBOARD_KEYS
 
@@ -106,12 +107,18 @@ export function useTodoItemListeners({ id, title }: TodoItemType) {
 
   return useMemo(
     () => ({
-      onChange,
-      onKeyDown,
-      onBlur,
-      onFocus,
-      onKeyboardDelete,
-      onInput,
+      itemListeners: {
+        onKeyDown: onKeyboardDelete,
+      },
+      fieldListeners: {
+        onKeyDown,
+        onBlur,
+        onFocus,
+        onInput,
+      },
+      checkboxListeners: {
+        onChange,
+      },
     }),
     [onChange, onKeyDown, onBlur, onKeyboardDelete, onInput, onFocus],
   )
@@ -130,7 +137,7 @@ export function useAddTodoItemListeners() {
       if (fieldText.length === 0) return
 
       addTodo({
-        id: crypto.randomUUID(),
+        id: uuidv7(),
         title: fieldText,
         completed: false,
       })
