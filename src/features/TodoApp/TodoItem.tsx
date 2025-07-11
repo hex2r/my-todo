@@ -16,7 +16,8 @@ function TodoItem(props: TodoItemType) {
     useTodoItemListeners(props)
   const { deleteTodo, editTodo } = useStoreAPI()
   const { deltaX, swipeListeners } = useHorizontalSwipe({
-    swipeLeftHandler: () => editTodo(props.id, { completed: true }),
+    swipeLeftHandler: () =>
+      editTodo(props.id, { completed: !checkboxRef?.current?.checked }),
     swipeRightHandler: () => deleteTodo(props.id),
   })
   const { menu, onContextMenu } = useContextMenu()
