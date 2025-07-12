@@ -32,7 +32,7 @@ export default function TodoTextbox({
     <span
       ref={ref}
       role="textbox"
-      tabIndex={isEdited ? 0 : undefined}
+      tabIndex={isTouchScreen() || isEdited ? 0 : undefined}
       data-placeholder={placeholder}
       contentEditable={
         isTouchScreen() || isEdited ? "plaintext-only" : undefined
@@ -43,7 +43,7 @@ export default function TodoTextbox({
         "text-white": !isCompleted,
         "data-[placeholder]:empty:before:content-[attr(data-placeholder)] data-[placeholder]:not-empty:before:hidden data-[placeholder]:before:text-[#666] data-[placeholder]:focus:before:content-[''] data-[placeholder]:before:cursor-text":
           placeholder,
-      })} flex gap-2 flex-col grow focus-visible:p-2 focus-visible:-m-2 in-focus:outline-amber-400`}
+      })} flex gap-2 flex-col grow focus-visible:p-2 focus-visible:-m-2 in-focus:outline-amber-400 select-none`}
       onBlur={onBlur}
       onDoubleClick={onDoubleClick}
       onFocus={onFocus}

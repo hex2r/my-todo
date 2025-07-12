@@ -18,3 +18,9 @@
 #root {
   @apply overflow-hidden;
 }
+
+[tabindex]:focus-visible,
+button:focus-visible {
+  outline-color: #99c8ff;
+  outline-width: 2px;
+}
