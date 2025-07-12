@@ -1,10 +1,10 @@
-import { useCallback, useMemo, type Dispatch, type SetStateAction } from "react"
+import { useCallback, useMemo } from "react"
 import type { TodoItemType } from "../types"
 
-export type ReturnUseTodoStoreActions = ReturnType<typeof useTodoStoreActions>
+export type ReturnTodoStoreActions = ReturnType<typeof useTodoStoreActions>
 
 export function useTodoStoreActions(
-  storeSetterFn: Dispatch<SetStateAction<TodoItemType[]>>,
+  storeSetterFn: React.Dispatch<React.SetStateAction<TodoItemType[]>>,
 ) {
   const addTodo = useCallback((todo: TodoItemType) => {
     storeSetterFn((prevState) => [...prevState, todo])

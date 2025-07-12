@@ -1,7 +1,7 @@
 import { loremIpsum } from "lorem-ipsum"
-import type { TodoItemType } from "../types"
 import { random } from "lodash-es"
 import { v7 as uuidv7 } from "uuid"
+import type { TodoItemType } from "../types"
 
 export function generateRandomInitialTodos(
   min: number,

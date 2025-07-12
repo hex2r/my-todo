@@ -1,24 +1,18 @@
-import {
-  useCallback,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react"
+import { useCallback, useState } from "react"
 import { isEmpty, isFunction, isUndefined, isNull } from "lodash-es"
 
-export function usePersistentState<T extends object | any[]>(
+export function usePersistentState<State extends object | any[]>(
   key: string,
-  initialState?: T | (() => T),
+  initialState?: State | (() => State),
   storage: Storage = localStorage,
-): [T, Dispatch<SetStateAction<T>>] {
-  const [state, setState] = useState<T>(() => {
+): [State, React.Dispatch<React.SetStateAction<State>>] {
+  const [state, setState] = useState<State>(() => {
     const storedValue = storage.getItem(key)
     let results
 
     if (!isNull(storedValue)) {
       results = JSON.parse(storedValue)
 
-      // Use initialState in case of empty storage state
       if (!isEmpty(results)) return results
     }
 
@@ -27,7 +21,7 @@ export function usePersistentState<T extends object | any[]>(
     }
 
     if (isFunction(initialState)) {
-      results = (initialState as () => T)()
+      results = (initialState as () => State)()
     } else {
       results = initialState
     }
@@ -37,18 +31,19 @@ export function usePersistentState<T extends object | any[]>(
     return results
   })
 
-  const setStateWithPersist: Dispatch<SetStateAction<T>> = useCallback(
-    (dispatchedValue) => {
-      setState((prevState) => {
-        const result = isFunction(dispatchedValue)
-          ? dispatchedValue(prevState)
-          : dispatchedValue
-        storage.setItem(key, JSON.stringify(result))
-        return result
-      })
-    },
-    [key],
-  )
+  const setStateWithPersist: React.Dispatch<React.SetStateAction<State>> =
+    useCallback(
+      (dispatchedValue) => {
+        setState((prevState) => {
+          const result = isFunction(dispatchedValue)
+            ? dispatchedValue(prevState)
+            : dispatchedValue
+          storage.setItem(key, JSON.stringify(result))
+          return result
+        })
+      },
+      [key],
+    )
 
   return [state, setStateWithPersist]
 }

@@ -1,6 +1,6 @@
 import { useTodoStore } from "./context/TodoStore"
 import TodoItem from "./TodoItem"
-import AddTodo from "./AddTodo"
+import AddTodoItem from "./AddTodoItem"
 
 export default TodoList
 
@@ -11,9 +11,9 @@ function TodoList() {
     <div>
       {todo.length > 0 ? (
         <ol>
-          {todo.map(({ id, title, completed }) => (
-            <li className="list-none" key={id}>
-              <TodoItem id={id} title={title} completed={completed} />
+          {todo.map((props) => (
+            <li className="list-none" key={props.id}>
+              <TodoItem {...props} />
             </li>
           ))}
         </ol>
@@ -22,7 +22,7 @@ function TodoList() {
           You have nothing to do. Enjoy your time ;)
         </div>
       )}
-      <AddTodo />
+      <AddTodoItem />
     </div>
   )
 }

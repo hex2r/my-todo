@@ -3,4 +3,5 @@ export const KEYBOARD_KEYS = {
   SPACE: " ",
   ESC: "Escape",
   BACKSPACE: "Delete",
+  E: "e",
 } as const

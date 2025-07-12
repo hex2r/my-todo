@@ -1,24 +1,22 @@
-import type { RefObject } from "react"
 import {
   ContextMenu,
   type ContextMenuProps,
 } from "../../components/ContextMenu"
 import { useStoreAPI } from "./context/TodoStore"
+import type { TodoItemType } from "./types"
 
 type TodoItemContextMenuProps = {
+  todo: TodoItemType
   menu: ContextMenuProps
-  id: string
-  ref: RefObject<HTMLSpanElement | null>
-  completed: boolean
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function TodoItemContextMenu({
+  todo,
   menu,
-  id,
-  completed,
-  ref,
+  setEditMode,
 }: TodoItemContextMenuProps) {
-  const { deleteTodo, editTodo } = useStoreAPI()
+  const { editTodo, deleteTodo } = useStoreAPI()
 
   return (
     <ContextMenu
@@ -29,15 +27,15 @@ export default function TodoItemContextMenu({
     >
       <ContextMenu.Item
         onClick={() => {
-          editTodo(id, { completed: !completed })
+          editTodo(todo.id, { completed: !todo.completed })
           menu.onClose()
         }}
       >
-        {!completed ? "Complete" : "Uncomplete"}
+        {todo.completed ? "Uncomplete" : "Complete"}
       </ContextMenu.Item>
       <ContextMenu.Item
         onClick={() => {
-          ref?.current?.focus()
+          setEditMode(true)
           menu.onClose()
         }}
       >
@@ -45,7 +43,7 @@ export default function TodoItemContextMenu({
       </ContextMenu.Item>
       <ContextMenu.Item
         onClick={() => {
-          deleteTodo(id)
+          deleteTodo(todo.id)
           menu.onClose()
         }}
       >

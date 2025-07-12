@@ -1,47 +1,60 @@
-import { type ChangeEvent, type KeyboardEvent, type RefObject } from "react"
 import { IoCheckbox, IoSquare } from "react-icons/io5"
+import { KEYBOARD_KEYS } from "../config/constants"
+import { useRef } from "react"
+
+const { SPACE, ENTER } = KEYBOARD_KEYS
 
 type CheckboxProps = {
-  ref?: RefObject<HTMLInputElement | null>
-  isChecked?: boolean
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
-  isDisabled?: boolean
+  ref?: React.RefObject<HTMLLabelElement | null>
+  checked?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLLabelElement>) => void
 }
 
 export default function Checkbox({
   ref,
-  isChecked = false,
-  isDisabled,
+  checked = false,
+  disabled,
+  readonly,
   onChange = () => {},
+  onKeyDown,
 }: CheckboxProps) {
-  const handleKeyDown = (e: KeyboardEvent<HTMLLabelElement>) => {
-    if (e.key === " " || e.key === "Enter") {
+  const checkboxRef = useRef<HTMLInputElement | null>(null)
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+    onKeyDown?.(e)
+
+    if (e.key === SPACE || e.key === ENTER) {
       e.preventDefault()
-      ref?.current?.click()
+      if (checkboxRef.current instanceof HTMLInputElement)
+        checkboxRef.current.click()
     }
   }
 
   return (
     <label
-      className={`flex shrink-0 ${isDisabled ? "" : "cursor-pointer"}`}
-      tabIndex={isDisabled ? -1 : 0}
+      ref={ref}
+      className={`flex shrink-0 ${disabled ? "" : "cursor-pointer"}`}
+      tabIndex={disabled ? -1 : 0}
       role="checkbox"
-      aria-checked={isChecked}
+      aria-checked={checked}
       onKeyDown={handleKeyDown}
     >
       <input
-        ref={ref}
+        ref={checkboxRef}
         tabIndex={-1}
         className="sr-only peer"
         type="checkbox"
         name="completed"
-        checked={isChecked}
+        checked={checked}
+        disabled={disabled}
+        readOnly={readonly}
         onChange={onChange}
-        disabled={isDisabled}
       />
       <IoCheckbox className="text-emerald-500 text-2xl hidden peer-checked:block" />
       <IoSquare
-        className={`text-2xl block peer-checked:hidden ${isDisabled ? "text-[#999]" : "text-white"}`}
+        className={`text-2xl block peer-checked:hidden ${disabled ? "text-[#999]" : "text-white"}`}
       />
     </label>
   )

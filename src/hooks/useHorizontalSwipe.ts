@@ -1,4 +1,4 @@
-import { useCallback, useState, type TouchEvent } from "react"
+import { useCallback, useState } from "react"
 
 type UseHorizontalSwipeType<Handler extends Function> = {
   swipeLeftHandler: Handler
@@ -16,7 +16,7 @@ export default function useHorizontalSwipe<Handler extends Function>({
   const [deltaX, setDeltaX] = useState<number>(0)
   const [deltaY, setDeltaY] = useState<number>(0)
 
-  const onTouchStart = useCallback((e: TouchEvent<HTMLDivElement>) => {
+  const onTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     setTouchStartX(e.touches[0].clientX)
     setTouchStartY(e.touches[0].clientY)
     setDeltaX(0)
@@ -24,7 +24,7 @@ export default function useHorizontalSwipe<Handler extends Function>({
   }, [])
 
   const onTouchMove = useCallback(
-    (e: TouchEvent<HTMLDivElement>) => {
+    (e: React.TouchEvent<HTMLDivElement>) => {
       if (touchStartX !== null && touchStartY !== null) {
         const currentX = e.touches[0].clientX
         const currentY = e.touches[0].clientY
@@ -36,7 +36,7 @@ export default function useHorizontalSwipe<Handler extends Function>({
   )
 
   const onTouchEnd = useCallback(
-    (_: TouchEvent<HTMLDivElement>) => {
+    (_: React.TouchEvent<HTMLDivElement>) => {
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         if (deltaX > swipeDeltaX) {
           swipeLeftHandler()

@@ -1,6 +1,9 @@
-import { createContext, use, useMemo, type PropsWithChildren } from "react"
+import { createContext, use, useMemo } from "react"
 import type { TodoItemType } from "../types"
-import { useTodoStoreActions } from "./useTodoStoreActions"
+import {
+  useTodoStoreActions,
+  type ReturnTodoStoreActions,
+} from "./useTodoStoreActions"
 import { usePersistentState } from "../../../hooks/usePersistentState"
 
 type TodoStoreType = {
@@ -8,15 +11,13 @@ type TodoStoreType = {
 }
 const TodoStore = createContext<TodoStoreType | undefined>(undefined)
 
-type TodoStoreActionsType = ReturnType<typeof useTodoStoreActions>
-
-const TodoStoreActions = createContext<TodoStoreActionsType | undefined>(
+const TodoStoreActions = createContext<ReturnTodoStoreActions | undefined>(
   undefined,
 )
 
 type TodoStoreProviderProps = {
   initialStore?: TodoItemType[]
-} & PropsWithChildren
+} & React.PropsWithChildren
 
 export function TodoStoreProvider({
   children,

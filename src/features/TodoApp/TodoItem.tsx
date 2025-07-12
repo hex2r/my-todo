@@ -1,68 +1,70 @@
-import { memo, useRef } from "react"
-import { useTodoItemListeners } from "./hooks/useTodo"
-import type { TodoItemType } from "./types"
+import { memo, useRef, useState } from "react"
+import clsx from "clsx"
 import Checkbox from "../../components/Checkbox"
 import { useStoreAPI } from "./context/TodoStore"
 import useHorizontalSwipe from "../../hooks/useHorizontalSwipe"
 import { useContextMenu } from "../../components/ContextMenu"
-import TodoAppContextMenu from "./TodoAppContextMenu"
-import isTouchDevice from "../../helpers/isTouchDevice"
+import TodoItemContextMenu from "./TodoItemContextMenu"
+import TodoField from "./TodoTextbox"
+import {
+  useCheckboxTodoItemListeners,
+  useTextboxTodoItemListeners,
+} from "./hooks/useTodoItemListeners"
+import type { TodoItemType } from "./types"
 
 export default memo(TodoItem)
 
 function TodoItem(props: TodoItemType) {
-  const checkboxRef = useRef<HTMLInputElement | null>(null)
-  const fieldRef = useRef<HTMLSpanElement>(null)
-  const { checkboxListeners, itemListeners, fieldListeners } =
-    useTodoItemListeners(props)
   const { deleteTodo, editTodo } = useStoreAPI()
+  const [isEditMode, setEditMode] = useState(false)
+  const checkboxRef = useRef<HTMLLabelElement | null>(null)
+  const textboxRef = useRef<HTMLSpanElement>(null)
+  const { menu, onContextMenu } = useContextMenu()
   const { deltaX, swipeListeners } = useHorizontalSwipe({
-    swipeLeftHandler: () =>
-      editTodo(props.id, { completed: !checkboxRef?.current?.checked }),
+    swipeLeftHandler: () => editTodo(props.id, { completed: !props.completed }),
     swipeRightHandler: () => deleteTodo(props.id),
   })
-  const { menu, onContextMenu } = useContextMenu()
-
-  const limitedDeltaX =
-    deltaX > 0 ? (deltaX > 0 ? 50 : deltaX) : deltaX < -50 ? -50 : deltaX
 
   return (
     <>
       <div
-        id={props.id}
-        data-shortcut-info={
-          isTouchDevice() ? undefined : "shift+delete to delete"
-        }
-        className="relative transition-[transform_220ms_ease-out] flex items-start w-full gap-4 p-4 hover:bg-[#2a2a2a] has-focus-visible:z-2 has-focus-visible:bg-[#333] has-focus-visible:before:content-[attr(data-shortcut-info)] before:absolute before:top-full before:right-1 before:text-[0.5rem] before:text-[#666] before:mt-[0.5]"
-        {...itemListeners}
+        data-shortcut-info={"CTRL + E to Edit, Shift + Delete to Delete"}
+        className={`relative flex transition-[transform_220ms_ease-out] items-start w-full gap-4 p-4 has-focus-visible:z-2 has-focus-visible:bg-[#333] not-pointer-coarse:has-focus-visible:before:content-[attr(data-shortcut-info)] before:absolute before:top-full before:right-1 before:text-[0.5rem] before:text-[#666] before:mt-[0.5] ${clsx(
+          {
+            "bg-[#333]": menu.isVisible,
+            "hover:bg-[#2a2a2a]": !menu.isVisible,
+          },
+        )}`}
         {...swipeListeners}
         onContextMenu={onContextMenu}
         style={{
-          transform: `translateX(${limitedDeltaX}px)`,
+          transform: `translateX(${deltaX}px)`,
         }}
       >
         <Checkbox
           ref={checkboxRef}
-          isChecked={props.completed}
-          {...checkboxListeners}
+          checked={props.completed}
+          {...useCheckboxTodoItemListeners(
+            { id: props.id },
+            {
+              setEditMode,
+            },
+          )}
         />
-        <span
-          ref={fieldRef}
-          tabIndex={-1}
-          contentEditable="plaintext-only"
-          className={`flex gap-2 flex-col grow focus-visible:p-2 focus-visible:-m-2 ${props.completed ? "not-focus-within:line-through text-[#999] focus:text-white" : "text-white"}`}
-          {...fieldListeners}
-          suppressContentEditableWarning
-        >
-          {props.title}
-        </span>
+        <TodoField
+          ref={textboxRef}
+          value={props.title}
+          isCompleted={props.completed}
+          isEdited={isEditMode}
+          {...useTextboxTodoItemListeners(
+            { id: props.id, title: props.title },
+            {
+              setEditMode,
+            },
+          )}
+        />
       </div>
-      <TodoAppContextMenu
-        completed={checkboxRef.current?.checked || false}
-        ref={fieldRef}
-        id={props.id}
-        menu={menu}
-      />
+      <TodoItemContextMenu menu={menu} todo={props} setEditMode={setEditMode} />
     </>
   )
 }

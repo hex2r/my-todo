@@ -1,16 +1,11 @@
-import {
-  useEffect,
-  useRef,
-  type MouseEvent as ReactMouseEvent,
-  type PropsWithChildren,
-} from "react"
+import { useEffect, useRef } from "react"
 
 export type ContextMenuProps = {
   x: number
   y: number
   isVisible: boolean
   onClose: () => void
-} & PropsWithChildren
+} & React.PropsWithChildren
 
 ContextMenu.Item = ContextMenuItem
 
@@ -49,8 +44,8 @@ export default function ContextMenu({
 }
 
 type ContextMenuItemType = {
-  onClick: (e: ReactMouseEvent<HTMLButtonElement>) => void
-} & PropsWithChildren
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+} & React.PropsWithChildren
 
 function ContextMenuItem({ onClick, children }: ContextMenuItemType) {
   return (
